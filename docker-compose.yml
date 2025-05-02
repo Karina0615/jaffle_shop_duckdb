@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  dbt-duckdb:
+  # postgres starts before dbt-duckdb
+    depends_on:
+      - postgres
+    image: xemuliam/dbt:duckdb
+    container_name: dbt_runner
+    ports:
+      - "8080:8080"
+    volumes:
+      - $PWD:/usr/app
+    working_dir: /usr/app
+    command: >
+      sh -c '''
+        # rm -f *.duckdb
+        # dbt clean
+        dbt run --target prod
+        # dbt run --model +mart
+        # dbt docs generate
+        # dbt docs serve --host=0.0.0.0 && tail -f /dev/null
+      '''
+
+  postgres:
+    image: postgres:15
+    container_name: pg_db
+    environment:
+      POSTGRES_USER: karynaB
+      POSTGRES_PASSWORD: karynaB
+      POSTGRES_DB: datamarts
+    ports:
+      - "6543:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

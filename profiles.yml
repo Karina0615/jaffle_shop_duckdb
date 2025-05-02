@@ -5,4 +5,15 @@ jaffle_shop:
     dev:
       type: duckdb
       path: 'jaffle_shop.duckdb'
-      threads: 24
+      threads: 3
+    
+    prod:
+      type: duckdb
+      path: 'jaffle_shop.duckdb'
+      threads: 25
+      extensions:
+        - postgres
+      attach:
+        - path: "postgresql://karynaB:karynaB@postgres:5432/datamarts"
+          type: postgres
+          alias: pg_db

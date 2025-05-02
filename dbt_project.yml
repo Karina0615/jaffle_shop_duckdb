@@ -6,7 +6,6 @@ version: '0.1'
 profile: 'jaffle_shop'
 
 model-paths: ["models"]
-seed-paths: ["seeds"]
 test-paths: ["tests"]
 analysis-paths: ["analysis"]
 macro-paths: ["macros"]
@@ -17,18 +16,32 @@ clean-targets:
     - "dbt_modules"
     - "logs"
 
-require-dbt-version: [">=1.0.0", "<2.0.0"]
+# vars:
+#   raw_data_path: "data"
 
-seeds: 
-  +docs:
-    node_color: '#cd7f32'
 
 models:
   jaffle_shop:
-    materialized: table
+    raw:
+      +materialized: table
+      +schema: bronze  
+      +docs:
+        node_color: '#cd7f32'
+    
     staging:
-      materialized: view
+      +materialized: "{{ 'view' if target.name == 'dev' else 'ephemeral' }}"  
+      +schema: silver
       +docs:
         node_color: 'silver'
-    +docs:
-      node_color: 'gold'
+    
+    mart:
+      materialized: table
+      database: postgres
+      # "{{ target.database if target.name == 'dev' else 'pg_db' }}"
+      schema: gold
+      +docs:
+        node_color: 'gold'
+
+
+    
+        
