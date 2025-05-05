@@ -15,16 +15,16 @@ services:
     command: >
       sh -c '''
         # rm -f *.duckdb
-        # dbt clean
+        dbt clean
+        dbt debug
         dbt run --target prod
-        # dbt run --model +mart
         # dbt docs generate
         # dbt docs serve --host=0.0.0.0 && tail -f /dev/null
       '''
 
   postgres:
     image: postgres:15
-    container_name: pg_db
+    # container_name: pg
     environment:
       POSTGRES_USER: karynaB
       POSTGRES_PASSWORD: karynaB

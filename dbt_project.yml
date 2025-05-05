@@ -34,10 +34,9 @@ models:
       +docs:
         node_color: 'silver'
     
-    mart:
+    marts:
       materialized: table
-      database: postgres
-      # "{{ target.database if target.name == 'dev' else 'pg_db' }}"
+      database: "{{ target.database if target.name == 'dev' else 'pg_db' }}"
       schema: gold
       +docs:
         node_color: 'gold'
