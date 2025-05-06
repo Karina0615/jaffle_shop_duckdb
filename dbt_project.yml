@@ -16,10 +16,6 @@ clean-targets:
     - "dbt_modules"
     - "logs"
 
-# vars:
-#   raw_data_path: "data"
-
-
 models:
   jaffle_shop:
     raw:
